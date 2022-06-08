@@ -11,8 +11,14 @@
  
 ]]
 
-
-local old_env = getfenv or _ENV
+function GETFENV()
+    if _VERSION == "Lua 5.1" or _VERSION == "Luau" then
+        return getfenv
+    else
+        return _ENV
+end
+end
+local old_env = GETFENV()
 local bkey = {
 -- Blacklisted constants, if you want you could edit them.
     "getfenv",
@@ -72,5 +78,5 @@ old_env["setmetatable"](who,{
 })
 
 old_env['pcall'](function()
--- Script here
+print("yo")
 end)
