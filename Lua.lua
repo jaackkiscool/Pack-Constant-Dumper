@@ -1,7 +1,7 @@
 local function _GETFENV()
     if _VERSION == "Lua 5.1" or _VERSION == "Luau" then
         return getfenv
-    elseif _VERSION ~= "Lua 5.1" or _VERSION ~= "Luau" then -- Incase Lua interpreter becomes retarded sometimes
+    elseif _VERSION ~= "Lua 5.1" or _VERSION ~= "Luau" then -- Incase Lua interpreter becomes dumb sometimes
         return _ENV
 end
 end
