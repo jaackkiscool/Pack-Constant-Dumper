@@ -1,11 +1,11 @@
-function GETFENV()
+local function _GETFENV()
     if _VERSION == "Lua 5.1" or _VERSION == "Luau" then
         return getfenv
     elseif _VERSION ~= "Lua 5.1" or _VERSION ~= "Luau" then -- Incase Lua interpreter becomes retarded sometimes
         return _ENV
 end
 end
-local old_env = GETFENV()
+local old_env = _GETFENV()
 local bkey = {
 -- Blacklisted constants, if you want you could edit them.
     "getfenv",
@@ -35,9 +35,9 @@ local bkey = {
     "tostring",
     "bit"
 }
-_ENV = {["old_env"]=GETFENV(),["bkey"]=bkey}
+_ENV = {["old_env"]=_GETFENV(),["bkey"]=bkey}
 -- _ENV is not usable
-who = old_env["GETFENV"]()
+who = old_env["_GETFENV"]()
 old_env["setmetatable"](who,{
     __index = function(t,i)
         local isfound = false
