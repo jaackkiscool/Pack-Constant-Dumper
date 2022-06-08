@@ -37,7 +37,7 @@ local bkey = {
 }
 _ENV = {["old_env"]=GETFENV(),["bkey"]=bkey}
 -- _ENV is not usable
-who = old_env["GETFENV"]() 
+who = old_env["GETFENV"]()
 old_env["setmetatable"](who,{
     __index = function(t,i)
         local isfound = false
@@ -51,6 +51,6 @@ old_env["setmetatable"](who,{
     end
 })
 
-old_env['pcall'](function()
-print("yo")
+old_env['pcall'](function() 
+    -- Script here 
 end)
