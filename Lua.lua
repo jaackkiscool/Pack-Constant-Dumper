@@ -10,7 +10,7 @@
 ]]
 
 local old_env = getfenv or _ENV
-local bkey = {
+local bconsts = {
 -- Blacklisted constants, feel free to add or edit more
     "getfenv",
     "string",
@@ -39,18 +39,18 @@ local bkey = {
     "tostring",
     "bit"
 }
-_ENV = {["old_env"]=old_env,["bkey"]=bkey}
-who = getfenv  or _ENV
-old_env["setmetatable"](who, {
-    __index = function(t,i)
-        local isfound = false
-        for _,v in old_env["pairs"](bkey) do
-            if v == i then isfound = true end
+local _ENV = {["old_env"]=old_env,["bconsts"]=bconsts}
+local GetFEnv = getfenv  or _ENV
+old_env["setmetatable"](GetFEnv, {
+    __index = function(table, key)
+        local found 
+        for _, value in old_env["pairs"](bconsts) do
+            if old_env["rawequal"](value, key) then found = true end
         end
-        if not isfound then 
-        old_env["print"](i)
+        if not found then 
+        old_env["print"](key)
         end
-        return old_env[i]
+        return old_env[key]
     end
 })
 
