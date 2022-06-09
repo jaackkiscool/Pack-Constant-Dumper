@@ -44,7 +44,7 @@ local GetFEnv = getfenv  or _ENV
 old_env["setmetatable"](GetFEnv, {
     __index = function(table, key)
         local found 
-        for _, value in old_env["pairs"](bconsts) do
+        for index, value in old_env["pairs"](bconsts) do
             if old_env["rawequal"](value, key) then found = true end
         end
         if not found then 
