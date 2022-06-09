@@ -1,30 +1,17 @@
 --[[
-
-
-▒█▀▀█ █▀▀█ █▀▀ █░█ 　 █▀▀ █▀▀█ █▀▀▄ █▀▀ ▀▀█▀▀ █▀▀█ █▀▀▄ ▀▀█▀▀ 　 █▀▀▄ █░░█ █▀▄▀█ █▀▀█ █▀▀ █▀▀█ 
-▒█▄▄█ █▄▄█ █░░ █▀▄ 　 █░░ █░░█ █░░█ ▀▀█ ░░█░░ █▄▄█ █░░█ ░░█░░ 　 █░░█ █░░█ █░▀░█ █░░█ █▀▀ █▄▄▀ 
-▒█░░░ ▀░░▀ ▀▀▀ ▀░▀ 　 ▀▀▀ ▀▀▀▀ ▀░░▀ ▀▀▀ ░░▀░░ ▀░░▀ ▀░░▀ ░░▀░░ 　 ▀▀▀░ ░▀▀▀ ▀░░░▀ █▀▀▀ ▀▀▀ ▀░▀▀
-
-
+   _____           _          _____                _              _       _____                                  
+ |  __ \         | |        / ____|              | |            | |     |  __ \                                 
+ | |__) |_ _  ___| | __    | |     ___  _ __  ___| |_ __ _ _ __ | |_    | |  | |_   _ _ __ ___  _ __   ___ _ __ 
+ |  ___/ _` |/ __| |/ /    | |    / _ \| '_ \/ __| __/ _` | '_ \| __|   | |  | | | | | '_ ` _ \| '_ \ / _ \ '__|
+ | |  | (_| | (__|   <     | |___| (_) | | | \__ \ || (_| | | | | |_    | |__| | |_| | | | | | | |_) |  __/ |   
+ |_|   \__,_|\___|_|\_\     \_____\___/|_| |_|___/\__\__,_|_| |_|\__|   |_____/ \__,_|_| |_| |_| .__/ \___|_|   
+                                                                                               | |              
+                                                                                               |_|              
 ]]
 
-local function _GETFENV()
-   suc,test = pcall(function()
-    if _VERSION == "Lua 5.1" or _VERSION == "Luau" then
-        return getfenv
-    elseif _VERSION ~= "Lua 5.1" or _VERSION ~= "Luau" then -- Incase Lua interpreter becomes dumb sometimes
-        return _ENV
-    end
-end)
-if not suc then
-   function _GETFENV()
-      return getfenv or function() return _ENV end
-   end
-end
-end
-local old_env = _GETFENV()
+local old_env = getfenv or _ENV
 local bkey = {
--- Blacklisted constants, if you want you could edit them.
+-- Blacklisted constants, feel free to add or edit more
     "getfenv",
     "string",
     "bit32",
@@ -52,10 +39,9 @@ local bkey = {
     "tostring",
     "bit"
 }
-_ENV = {["old_env"]=_GETFENV(),["bkey"]=bkey}
--- _ENV is not usable
-who = old_env["_GETFENV"]()
-old_env["setmetatable"](who,{
+_ENV = {["old_env"]=old_env,["bkey"]=bkey}
+who = getfenv  or _ENV
+old_env["setmetatable"](who, {
     __index = function(t,i)
         local isfound = false
         for _,v in old_env["pairs"](bkey) do
@@ -68,6 +54,6 @@ old_env["setmetatable"](who,{
     end
 })
 
-old_env['pcall'](function() 
-    -- Script here 
+old_env['pcall'](function()
+-- Script here
 end)
