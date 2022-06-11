@@ -9,10 +9,10 @@
                                                                                                |_|              
 ]]
 
-old_env = _ENV
+old_env = _ENV or getfenv
 local _ENV = {["old_env"]=old_env}
-
-old_env["setmetatable"](_ENV, {
+local who = getfenv or _ENV
+old_env["setmetatable"](who, {
     __index = function(table, key)
         old_env["print"](key)
         return old_env[key]
