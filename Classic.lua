@@ -8,8 +8,6 @@
                                                                                                | |              
                                                                                                |_|              
 ]]
-
-local old_env = getfenv or _ENV
 local bconsts = {
 -- Blacklisted constants, feel free to add or edit more
     "getfenv",
@@ -39,9 +37,8 @@ local bconsts = {
     "tostring",
     "bit"
 }
-local _ENV = {["old_env"]=old_env,["bconsts"]=bconsts}
-local GetFEnv = getfenv  or _ENV
-old_env["setmetatable"](GetFEnv, {
+local _ENV = {["old_env"]=(getfenv)or(_ENV), ["bconsts"]=bconsts}
+old_env["setmetatable"](_ENV, {
     __index = function(table, key)
         local found 
         for index, value in old_env["pairs"](bconsts) do
